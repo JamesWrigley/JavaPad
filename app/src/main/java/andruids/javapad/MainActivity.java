@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.webkit.WebView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements PadFragment.OnFragmentInteractionListener {
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
