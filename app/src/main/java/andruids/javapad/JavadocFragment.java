@@ -53,9 +53,9 @@ public class JavadocFragment extends Fragment {
         return fragment;
     }
 
-    public WebView getWebView(){
+    public WebView getWebView(View view){
 
-        return (WebView) getActivity().findViewById(R.id.webView);
+        return (WebView) view.findViewById(R.id.webView);
     }
 
 
@@ -69,18 +69,21 @@ public class JavadocFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // Enable Javascript
-        WebSettings webSettings = getWebView().getSettings();
-        webSettings.setJavaScriptEnabled(true);
 
-        getWebView().loadUrl("https://docs.oracle.com/javase/7/docs/api/");
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_javadoc, container, false);
+        View view = inflater.inflate(R.layout.fragment_javadoc, container, false);
+        // Enable Javascript
+        WebSettings webSettings = getWebView(view).getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        getWebView(view).loadUrl("https://docs.oracle.com/javase/7/docs/api/");
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

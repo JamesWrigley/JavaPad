@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements PadFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements PadFragment.OnFragmentInteractionListener, JavadocFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
             if (position == 0) {
                 return new PadFragment();
             } else {
-                return new PlaceholderFragment().newInstance(position + 1);
+                return new JavadocFragment();
             }
         }
 
