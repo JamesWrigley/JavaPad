@@ -11,4 +11,14 @@
         android:layout_height="640dp"
         android:id="@+id/webView"
         android:layout_gravity="left|top" />
+
+    <Spinner
+        android:layout_width="143dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_gravity="left|bottom"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:backgroundTint="@color/colorAccent" />
+
 </FrameLayout>

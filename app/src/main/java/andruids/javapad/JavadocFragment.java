@@ -9,6 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 
 /**
@@ -28,11 +43,25 @@ public class JavadocFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private WebView viu;
+
+    private static String url = "https://docs.oracle.com/javase/8/docs/api/";
+    private static List<String> urls = new ArrayList<String>();
+    public static Map<String, Integer> history = new HashMap<>();
 
     private OnFragmentInteractionListener mListener;
 
     public JavadocFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if(isVisibleToUser){
+            viu.loadUrl(url);
+        }
     }
 
     /**
@@ -53,12 +82,10 @@ public class JavadocFragment extends Fragment {
         return fragment;
     }
 
-    public WebView getWebView(View view){
+    public WebView getWebView(View view) {
 
         return (WebView) view.findViewById(R.id.webView);
     }
-
-
 
 
     @Override
@@ -70,8 +97,6 @@ public class JavadocFragment extends Fragment {
         }
 
 
-
-
     }
 
     @Override
@@ -79,12 +104,37 @@ public class JavadocFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_javadoc, container, false);
+
+        viu = getWebView(view);
         // Enable Javascript
         WebSettings webSettings = getWebView(view).getSettings();
         webSettings.setJavaScriptEnabled(true);
         getWebView(view).getSettings().setUseWideViewPort(true);
         getWebView(view).getSettings().setBuiltInZoomControls(true);
-        getWebView(view).loadUrl("https://docs.oracle.com/javase/7/docs/api/");
+        getWebView(view).loadUrl(url);
+        getWebView(view).setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return true;
+            }
+
+            @Override
+            public void onLoadResource(WebView view, String u) {
+                //do something
+                urls.add(u);
+            }
+        });
+
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.javaVer_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
 
         return view;
     }
@@ -111,6 +161,43 @@ public class JavadocFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public static List<String> getUrls() {
+        return urls;
+    }
+
+    public static Map<String, Integer> readFile(Context context, String filename) {
+        try {
+            FileInputStream fis = context.openFileInput(filename);
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+
+                if(JavadocFragment.history.containsKey(line)){
+
+                    JavadocFragment.history.put(line, JavadocFragment.history.get(line) + 1);
+                }
+                else{
+                    JavadocFragment.history.put(line, 1);
+                }
+            }
+
+            return JavadocFragment.history;
+
+        } catch (FileNotFoundException e) {
+            return null;
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public static void setUrl(String u) {
+        url = u;
     }
 
     /**

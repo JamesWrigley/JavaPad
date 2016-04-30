@@ -1,6 +1,9 @@
 package andruids.javapad;
 
 import android.content.Intent;
+
+import android.content.Context;
+
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -26,7 +29,16 @@ import android.widget.TextView;
 import syntaxhighlight.Parser;
 import syntaxhighlight.ParseResult;
 import prettify.PrettifyParser;
-
+        import java.io.BufferedReader;
+        import java.io.FileInputStream;
+        import java.io.FileNotFoundException;
+        import java.io.FileOutputStream;
+        import java.io.FileWriter;
+        import java.io.IOException;
+        import java.io.InputStreamReader;
+        import java.io.UnsupportedEncodingException;
+        import java.util.HashMap;
+        import java.util.Map;
 import java.io.Console;
 import java.util.HashMap;
 
@@ -48,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +95,61 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
 
     }
 
+
+//    @Override
+//    public void onPause(){
+//        super.onPause();
+//
+//        String filename = "history.txt";
+//
+//        FileOutputStream outputStream;
+//
+//        try {
+//            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+//
+//            for (String string: JavadocFragment.getUrls()) {
+//
+//                outputStream.write(string.getBytes());
+//                outputStream.close();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
+//
+//   @Override
+//    public void onResume(){
+//        super.onResume();
+//
+//       Context context = getApplicationContext();
+//       String filename = "history.txt";
+//       Map<String, Integer> urlString = JavadocFragment.readFile(context, filename);
+//       int count = Integer.MIN_VALUE;
+//       String str = "";
+//
+//
+//       if(urlString == null){
+//           return;
+//       }
+//       for (Map.Entry<String, Integer> e : urlString.entrySet()) {
+//           if(e.getValue() > count) {
+//               if(count > 10)
+//                   str = e.getKey();
+//               else {
+//                   count = urlString.get(e);
+//                   str = e.getKey();
+//               }
+//           }
+//
+//       }
+//
+//       JavadocFragment.setUrl(str);
+//
+//
+//    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -103,7 +173,8 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) { }
+    public void onFragmentInteraction(Uri uri) {
+    }
 
     /**
      * A placeholder fragment containing a simple view.
