@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -134,6 +135,34 @@ public class JavadocFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                String item = parentView.getItemAtPosition(position).toString();
+                if(item.equals("Java 8")){
+                    url = "https://docs.oracle.com/javase/8/docs/api/";
+                }
+                if(item.equals("Java 7")){
+                    url = "https://docs.oracle.com/javase/7/docs/api/";
+                }
+                if(item.equals("Java 6")){
+                    url = "https://docs.oracle.com/javase/6/docs/api/";
+                }
+                if(item.equals("Java 5")){
+                    url = "http://docs.oracle.com/javase/1.5.0/docs/api/";
+                }
+
+                viu.loadUrl(url);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
 
         return view;

@@ -11,14 +11,25 @@
         android:layout_height="640dp"
         android:id="@+id/webView"
         android:layout_gravity="left|top" />
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="left|bottom">
 
+
+    <EditText
+        android:layout_width="128dp"
+        android:layout_height="56dp"
+        android:id="@+id/editText"
+
+        android:background="@android:drawable/edit_text" />
     <Spinner
-        android:layout_width="143dp"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="56dp"
         android:id="@+id/spinner"
-        android:layout_gravity="left|bottom"
+        android:layout_below="@id/editText"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:backgroundTint="@color/colorAccent" />
+        android:spinnerMode="dropdown" />
 
+</RelativeLayout>
 </FrameLayout>

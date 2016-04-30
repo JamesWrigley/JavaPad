@@ -13,12 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/appbar_padding_top"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+
+        android:background="@android:color/transparent">
+
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:tabTextColor="#000000"
+            app:tabSelectedTextColor="#000000"/>
+
+            android:fillViewport="false" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -34,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:src="@android:drawable/ic_dialog_email"
+        app:backgroundTint="@android:color/holo_orange_dark" />
 
 </android.support.design.widget.CoordinatorLayout>

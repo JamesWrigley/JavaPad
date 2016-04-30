@@ -77,8 +77,11 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
+
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.code);
+        tabLayout.getTabAt(1).setIcon(R.drawable.java);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
