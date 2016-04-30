@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.EditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,8 +29,11 @@ public class PadFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public PadFragment() {
-        // Required empty public constructor
+    public PadFragment() { }
+
+    public String getText() {
+        EditText e = (EditText)getView().findViewById(R.id.edittext);
+        return e.getText().toString();
     }
 
     /**

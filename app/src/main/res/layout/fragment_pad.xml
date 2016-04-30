@@ -5,7 +5,7 @@
     tools:context="andruids.javapad.PadFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <EditText
+    <EditText android:id="@+id/edittext"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="left"
