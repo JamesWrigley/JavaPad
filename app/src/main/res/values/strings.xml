@@ -4,10 +4,10 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="edittext_tint">Enter code</string>
     <string-array name="javaVer_array">
-        <item>Java 5</item>
-        <item>Java 6</item>
-        <item>Java 7</item>
         <item>Java 8</item>
+        <item>Java 7</item>
+        <item>Java 6</item>
+        <item>Java 5</item>
     </string-array>
 
 </resources>
