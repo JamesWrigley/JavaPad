@@ -1,7 +1,6 @@
 package andruids.javapad;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +8,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,13 +78,12 @@ public class PadFragment extends Fragment {
             }
         }
 
-        String foo = Html.fromHtml(highlightedText.toString()).toString();
         return Html.fromHtml(highlightedText.toString());
     }
 
-    public String getText() {
+    public Spanned getText() {
         EditText e = (EditText) getView().findViewById(R.id.edittext);
-        return e.getText().toString();
+        return e.getText();
     }
 
     /**
@@ -150,9 +147,12 @@ public class PadFragment extends Fragment {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
         });
 
         return view;

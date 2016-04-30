@@ -1,9 +1,8 @@
 package andruids.javapad;
 
 import android.content.Intent;
-
-import android.content.Context;
-
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -14,33 +13,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import syntaxhighlight.Parser;
-import syntaxhighlight.ParseResult;
-import prettify.PrettifyParser;
-        import java.io.BufferedReader;
-        import java.io.FileInputStream;
-        import java.io.FileNotFoundException;
-        import java.io.FileOutputStream;
-        import java.io.FileWriter;
-        import java.io.IOException;
-        import java.io.InputStreamReader;
-        import java.io.UnsupportedEncodingException;
-        import java.util.HashMap;
-        import java.util.Map;
-import java.io.Console;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PadFragment.OnFragmentInteractionListener,
                                                                JavadocFragment.OnFragmentInteractionListener {
@@ -62,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
     private ViewPager mViewPager;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
-
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.code);
@@ -87,11 +67,24 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PadFragment pad = (PadFragment)fragments.get(0);
-                Uri uriText = Uri.parse("mailto: " +
-                                        "?subject=Solution" +
-                                        "&body=" + pad.getText());
-                Intent emailer = new Intent(Intent.ACTION_SENDTO, uriText);
+                PadFragment pad = (PadFragment) fragments.get(0);
+                Intent emailer = new Intent(Intent.ACTION_SENDTO);
+                emailer.setType("text/html");
+                emailer.putExtra(Intent.EXTRA_SUBJECT, "Solution");
+
+                // Check whether we can send formatted HTML
+                PackageManager manager = getPackageManager();
+                List<ResolveInfo> infos = manager.queryIntentActivities(emailer, 0);
+                if (infos.size() == 0) { // If we can't, default to plain text
+                    emailer.setData(Uri.parse("mailto:"));
+                    emailer.putExtra(Intent.EXTRA_TEXT, pad.getText().toString());
+                    Toast.makeText(getApplicationContext(),
+                            "HTML formatted email is unavailable",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    emailer.putExtra(Intent.EXTRA_TEXT, pad.getText());
+                }
+
                 startActivity(Intent.createChooser(emailer, "Send email.."));
             }
         });
