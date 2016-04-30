@@ -17,17 +17,10 @@
     android:layout_gravity="left|bottom">
 
 
-    <EditText
-        android:layout_width="128dp"
-        android:layout_height="56dp"
-        android:id="@+id/editText"
-
-        android:background="@android:drawable/edit_text" />
     <Spinner
         android:layout_width="128dp"
         android:layout_height="56dp"
         android:id="@+id/spinner"
-        android:layout_below="@id/editText"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
 
