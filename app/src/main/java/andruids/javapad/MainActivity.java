@@ -11,19 +11,29 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.EditText;
 import android.widget.TextView;
 
+import syntaxhighlight.Parser;
+import syntaxhighlight.ParseResult;
+import prettify.PrettifyParser;
+
+import java.io.Console;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements PadFragment.OnFragmentInteractionListener,
                                                                JavadocFragment.OnFragmentInteractionListener {
     HashMap<Integer, Fragment> fragments;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -61,16 +71,14 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
             public void onClick(View view) {
                 PadFragment pad = (PadFragment)fragments.get(0);
                 Uri uriText = Uri.parse("mailto: " +
-                        "?subject=Solution" +
-                        "&body=" + Uri.encode(pad.getText()));
-                Intent emailer = new Intent(Intent.ACTION_SENDTO);
-                emailer.setData(uriText);
+                                        "?subject=Solution" +
+                                        "&body=" + pad.getText());
+                Intent emailer = new Intent(Intent.ACTION_SENDTO, uriText);
                 startActivity(Intent.createChooser(emailer, "Send email.."));
             }
         });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

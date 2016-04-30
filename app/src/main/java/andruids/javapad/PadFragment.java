@@ -4,10 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import java.util.HashMap;
+import java.util.List;
+
+import prettify.PrettifyParser;
+import syntaxhighlight.ParseResult;
+import syntaxhighlight.Parser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,10 +40,42 @@ public class PadFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public PadFragment() { }
+
+    private Parser parser;
+    private String pattern;
+    private HashMap<String, String> colors;
+
+    public PadFragment() {
+        parser = new PrettifyParser();
+        pattern = "<font color=\"#%s\">%s</font>";
+        colors = new HashMap<>();
+        colors.put("typ", "87cefa");
+        colors.put("kwd", "00ff00");
+        colors.put("lit", "ffff00");
+        colors.put("com", "393939");
+        colors.put("str", "ff4500");
+        colors.put("pun", "393939");
+        colors.put("pln", "ffffff");
+    }
+
+    private String getColor(String type){
+        return colors.containsKey(type) ? colors.get(type) : colors.get("pln");
+    }
+
+    private Spanned highlight(String text) {
+        StringBuilder highlightedText = new StringBuilder();
+        List<ParseResult> results = parser.parse(".java", text);
+        for(ParseResult result : results){
+            String type = result.getStyleKeys().get(0);
+            String content = text.substring(result.getOffset(), result.getOffset() + result.getLength());
+            highlightedText.append(String.format(pattern, getColor(type), content));
+        }
+
+        return Html.fromHtml(highlightedText.toString());
+    }
 
     public String getText() {
-        EditText e = (EditText)getView().findViewById(R.id.edittext);
+        EditText e = (EditText) getView().findViewById(R.id.edittext);
         return e.getText().toString();
     }
 
@@ -66,8 +109,29 @@ public class PadFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pad, container, false);
+        View view = inflater.inflate(R.layout.fragment_pad, container, false);
+        // Get the EditText to reformat itself after every text change
+        final EditText e = (EditText)view.findViewById(R.id.edittext);
+        e.addTextChangedListener(new TextWatcher() {
+            private boolean test = true;
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//                if(test) {
+//                    test = false;
+//                    String code = "for (int i = 0; i < 5; i++) {\nSystem.out.println(i);\n}";
+//                    e.setText(highlight(code));//editable.toString()));
+//                    test = true;
+//                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
