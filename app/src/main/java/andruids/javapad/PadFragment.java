@@ -60,7 +60,7 @@ public class PadFragment extends Fragment {
         colors.put("pln", "292929");
     }
 
-    private String getColor(String type){
+    private String getColor(String type) {
         return colors.containsKey(type) ? colors.get(type) : colors.get("pln");
     }
 
@@ -70,15 +70,17 @@ public class PadFragment extends Fragment {
         for (ParseResult result : results) {
             String type = result.getStyleKeys().get(0);
             String content = text.substring(result.getOffset(), result.getOffset() + result.getLength());
-            if (content.equals("\n")) {
-                continue;
-//                highlightedText.append("<br>");
-            } else {
-                highlightedText.append(String.format(pattern, getColor(type), Html.escapeHtml(content)));
+            String[] parts = content.split("((?<=\\n)|(?=\\n))", -1);
+            for (String token : parts) {
+                if (token.equals("\n")) {
+                    highlightedText.append("<br>");
+                } else {
+                    highlightedText.append(String.format(pattern, getColor(type), Html.escapeHtml(token)));
+                }
             }
         }
 
-        Log.v("JavaPad", Html.fromHtml(highlightedText.toString()).toString());
+        String foo = Html.fromHtml(highlightedText.toString()).toString();
         return Html.fromHtml(highlightedText.toString());
     }
 
@@ -119,32 +121,36 @@ public class PadFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pad, container, false);
         // Get the EditText to reformat itself after every text change
-        final EditText e = (EditText)view.findViewById(R.id.edittext);
+        final EditText e = (EditText) view.findViewById(R.id.edittext);
         e.addTextChangedListener(new TextWatcher() {
             private boolean test = true;
-            private int duplicateCount = 0;
-            private String oldString = "";
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                int i = e.getSelectionStart();
-
                 if (test) {
                     test = false;
-                    e.setText(highlight(editable.toString()));
-                    try {
-                        e.setSelection(i);
-                    } catch (IndexOutOfBoundsException ex) {
-                        e.setText(e.getText().append("\n"));
-                        e.setSelection(i);
+                    int i = e.getSelectionStart();
+                    Spanned text = highlight(editable.toString());
+                    if (text.length() >= 2) {
+                        String chars = e.getText().toString();
+                        String lastChars = chars.substring(chars.length() - 2);
+                        if (lastChars.equals("\n ")) {
+                            e.setText(text);
+                            e.append(" ");
+                        } else {
+                            e.setText(text);
+                        }
+                    } else {
+                        e.setText(text);
                     }
-                    oldString = editable.toString();
+
+                    e.setSelection(i);
                     test = true;
                 }
             }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
         });
