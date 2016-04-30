@@ -82,7 +82,10 @@ public class JavadocFragment extends Fragment {
         // Enable Javascript
         WebSettings webSettings = getWebView(view).getSettings();
         webSettings.setJavaScriptEnabled(true);
+        getWebView(view).getSettings().setUseWideViewPort(true);
+        getWebView(view).getSettings().setBuiltInZoomControls(true);
         getWebView(view).loadUrl("https://docs.oracle.com/javase/7/docs/api/");
+
         return view;
     }
 

@@ -8,7 +8,7 @@
 
     <WebView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="640dp"
         android:id="@+id/webView"
         android:layout_gravity="left|top" />
 </FrameLayout>
