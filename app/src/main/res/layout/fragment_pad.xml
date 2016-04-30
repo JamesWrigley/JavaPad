@@ -11,6 +11,6 @@
         android:gravity="left"
         android:hint="@string/edittext_tint"
         android:fontFamily="monospace"
-        android:inputType="textMultiLine"/>
+        android:inputType="textMultiLine|textNoSuggestions" />
 
 </FrameLayout>

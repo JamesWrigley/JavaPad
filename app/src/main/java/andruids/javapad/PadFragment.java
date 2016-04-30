@@ -1,6 +1,7 @@
 package andruids.javapad;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,13 +51,13 @@ public class PadFragment extends Fragment {
         parser = new PrettifyParser();
         pattern = "<font color=\"#%s\">%s</font>";
         colors = new HashMap<>();
-        colors.put("typ", "87cefa");
-        colors.put("kwd", "00ff00");
-        colors.put("lit", "ffff00");
-        colors.put("com", "393939");
-        colors.put("str", "ff4500");
-        colors.put("pun", "393939");
-        colors.put("pln", "ffffff");
+        colors.put("typ", "9473a5");
+        colors.put("kwd", "ff4500");
+        colors.put("lit", "6592b4");
+        colors.put("com", "7e7e7e");
+        colors.put("str", "008e00");
+        colors.put("pun", "000000");
+        colors.put("pln", "292929");
     }
 
     private String getColor(String type){
@@ -64,13 +66,19 @@ public class PadFragment extends Fragment {
 
     private Spanned highlight(String text) {
         StringBuilder highlightedText = new StringBuilder();
-        List<ParseResult> results = parser.parse(".java", text);
-        for(ParseResult result : results){
+        List<ParseResult> results = parser.parse("java", text);
+        for (ParseResult result : results) {
             String type = result.getStyleKeys().get(0);
             String content = text.substring(result.getOffset(), result.getOffset() + result.getLength());
-            highlightedText.append(String.format(pattern, getColor(type), content));
+            if (content.equals("\n")) {
+                continue;
+//                highlightedText.append("<br>");
+            } else {
+                highlightedText.append(String.format(pattern, getColor(type), Html.escapeHtml(content)));
+            }
         }
 
+        Log.v("JavaPad", Html.fromHtml(highlightedText.toString()).toString());
         return Html.fromHtml(highlightedText.toString());
     }
 
@@ -114,19 +122,29 @@ public class PadFragment extends Fragment {
         final EditText e = (EditText)view.findViewById(R.id.edittext);
         e.addTextChangedListener(new TextWatcher() {
             private boolean test = true;
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-//                if(test) {
-//                    test = false;
-//                    String code = "for (int i = 0; i < 5; i++) {\nSystem.out.println(i);\n}";
-//                    e.setText(highlight(code));//editable.toString()));
-//                    test = true;
-//                }
-            }
+            private int duplicateCount = 0;
+            private String oldString = "";
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                int i = e.getSelectionStart();
+
+                if (test) {
+                    test = false;
+                    e.setText(highlight(editable.toString()));
+                    try {
+                        e.setSelection(i);
+                    } catch (IndexOutOfBoundsException ex) {
+                        e.setText(e.getText().append("\n"));
+                        e.setSelection(i);
+                    }
+                    oldString = editable.toString();
+                    test = true;
+                }
+            }
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
         });
