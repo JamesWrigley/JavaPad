@@ -76,13 +76,22 @@ public class PadFragment extends Fragment {
         for (ParseResult result : results) {
             String type = result.getStyleKeys().get(0);
             String content = text.substring(result.getOffset(), result.getOffset() + result.getLength());
-            String[] parts = content.split("((?<=\\n)|(?=\\n))", -1);
-            for (String token : parts) {
-                if (token.equals("\n")) {
-                    highlightedText.append("<br>");
-                } else {
-                    highlightedText.append(String.format(pattern, getColor(type), Html.escapeHtml(token)));
+
+            if (content.contains("\n")) {
+                String[] parts = content.split("((?<=\\n)|(?=\\n))", -1);
+                for (String token : parts) {
+                    if (token.equals("\n")) {
+                        highlightedText.append("<br>");
+                    } else {
+                        highlightedText.append(String.format(pattern, getColor(type), Html.escapeHtml(token)));
+                    }
                 }
+            } else if (content.trim().isEmpty()) {
+                for (int i = 0; i < content.length(); ++i) {
+                    highlightedText.append("&nbsp;");
+                }
+            } else {
+                highlightedText.append(String.format(pattern, getColor(type), Html.escapeHtml(content)));
             }
         }
 
@@ -156,12 +165,9 @@ public class PadFragment extends Fragment {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
         });
 
         // Set up the buttons

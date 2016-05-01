@@ -12,7 +12,7 @@
         <EditText android:id="@+id/edittext"
             android:layout_width="match_parent"
             android:layout_height="0px"
-            android:layout_weight="80"
+            android:layout_weight="70"
             android:gravity="left"
             android:hint="@string/edittext_tint"
             android:fontFamily="monospace"
@@ -29,8 +29,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="10">
+            android:layout_height="wrap_content" >
 
             <Button android:id="@+id/indent"
                 android:text="Indent"
