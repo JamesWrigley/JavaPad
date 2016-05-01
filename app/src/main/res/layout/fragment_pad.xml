@@ -23,11 +23,11 @@
             android:textSize="18dp"
             android:textColor="@color/colorPrimaryDark"
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="10"/>
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:orientation="horizontal"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -39,27 +39,27 @@
             <Button
                 android:id="@+id/leftParen"
                 android:text="("
-                android:layout_width="wrap_content"
+                android:layout_width="80px"
                 android:layout_height="wrap_content" />
 
             <Button android:id="@+id/rightParen"
                 android:text=")"
-                android:layout_width="wrap_content"
+                android:layout_width="80px"
                 android:layout_height="wrap_content" />
 
             <Button android:id="@+id/leftBrace"
                 android:text="{"
-                android:layout_width="wrap_content"
+                android:layout_width="80px"
                 android:layout_height="wrap_content" />
 
             <Button android:id="@+id/rightBrace"
                 android:text="}"
-                android:layout_width="wrap_content"
+                android:layout_width="80px"
                 android:layout_height="wrap_content" />
 
             <Button android:id="@+id/semicolon"
                 android:text=";"
-                android:layout_width="wrap_content"
+                android:layout_width="80px"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
