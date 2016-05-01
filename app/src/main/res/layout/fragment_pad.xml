@@ -4,13 +4,64 @@
     android:layout_height="match_parent"
     tools:context="andruids.javapad.PadFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <EditText android:id="@+id/edittext"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="left"
-        android:hint="@string/edittext_tint"
-        android:fontFamily="monospace"
-        android:inputType="textMultiLine|textNoSuggestions" />
+        android:layout_height="match_parent" >
 
+        <EditText android:id="@+id/edittext"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="80"
+            android:gravity="left"
+            android:hint="@string/edittext_tint"
+            android:fontFamily="monospace"
+            android:inputType="textMultiLine|textNoSuggestions" />
+
+        <Button android:id="@+id/email"
+            android:text="Email"
+            android:textSize="18dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="10"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="10">
+
+            <Button android:id="@+id/indent"
+                android:text="Indent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/leftParen"
+                android:text="("
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button android:id="@+id/rightParen"
+                android:text=")"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button android:id="@+id/leftBrace"
+                android:text="{"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button android:id="@+id/rightBrace"
+                android:text="}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button android:id="@+id/semicolon"
+                android:text=";"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>

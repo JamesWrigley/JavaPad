@@ -1,8 +1,10 @@
 package andruids.javapad;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,12 +15,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,88 +68,33 @@ public class MainActivity extends AppCompatActivity implements PadFragment.OnFra
         tabLayout.getTabAt(0).setIcon(R.drawable.code);
         tabLayout.getTabAt(1).setIcon(R.drawable.java);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PadFragment pad = (PadFragment) fragments.get(0);
-                Intent emailer = new Intent(Intent.ACTION_SENDTO);
-                emailer.setType("text/html");
-                emailer.putExtra(Intent.EXTRA_SUBJECT, "Solution");
-
-                // Check whether we can send formatted HTML
-                PackageManager manager = getPackageManager();
-                List<ResolveInfo> infos = manager.queryIntentActivities(emailer, 0);
-                if (infos.size() == 0) { // If we can't, default to plain text
-                    emailer.setData(Uri.parse("mailto:"));
-                    emailer.putExtra(Intent.EXTRA_TEXT, pad.getText().toString());
-                    Toast.makeText(getApplicationContext(),
-                            "HTML formatted email is unavailable",
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    emailer.putExtra(Intent.EXTRA_TEXT, pad.getText());
-                }
-
-                startActivity(Intent.createChooser(emailer, "Send email.."));
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                PadFragment pad = (PadFragment) fragments.get(0);
+//                Intent emailer = new Intent(Intent.ACTION_SENDTO);
+//                emailer.setType("text/html");
+//                emailer.putExtra(Intent.EXTRA_SUBJECT, "Solution");
+//
+//                // Check whether we can send formatted HTML
+//                PackageManager manager = getPackageManager();
+//                List<ResolveInfo> infos = manager.queryIntentActivities(emailer, 0);
+//                if (infos.size() == 0) { // If we can't, default to plain text
+//                    emailer.setData(Uri.parse("mailto:"));
+//                    emailer.putExtra(Intent.EXTRA_TEXT, pad.getText().toString());
+//                    Toast.makeText(getApplicationContext(),
+//                                   "HTML formatted email is unavailable",
+//                                   Toast.LENGTH_LONG).show();
+//                } else {
+//                    emailer.putExtra(Intent.EXTRA_TEXT, pad.getText());
+//                }
+//
+//                startActivity(Intent.createChooser(emailer, "Send email.."));
+//            }
+//        });
 
     }
-
-
-//    @Override
-//    public void onPause(){
-//        super.onPause();
-//
-//        String filename = "history.txt";
-//
-//        FileOutputStream outputStream;
-//
-//        try {
-//            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-//
-//            for (String string: JavadocFragment.getUrls()) {
-//
-//                outputStream.write(string.getBytes());
-//                outputStream.close();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
-//
-//   @Override
-//    public void onResume(){
-//        super.onResume();
-//
-//       Context context = getApplicationContext();
-//       String filename = "history.txt";
-//       Map<String, Integer> urlString = JavadocFragment.readFile(context, filename);
-//       int count = Integer.MIN_VALUE;
-//       String str = "";
-//
-//
-//       if(urlString == null){
-//           return;
-//       }
-//       for (Map.Entry<String, Integer> e : urlString.entrySet()) {
-//           if(e.getValue() > count) {
-//               if(count > 10)
-//                   str = e.getKey();
-//               else {
-//                   count = urlString.get(e);
-//                   str = e.getKey();
-//               }
-//           }
-//
-//       }
-//
-//       JavadocFragment.setUrl(str);
-//
-//
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

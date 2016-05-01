@@ -1,6 +1,9 @@
 package andruids.javapad;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +11,15 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -117,6 +125,7 @@ public class PadFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pad, container, false);
+
         // Get the EditText to reformat itself after every text change
         final EditText e = (EditText) view.findViewById(R.id.edittext);
         e.addTextChangedListener(new TextWatcher() {
@@ -154,6 +163,68 @@ public class PadFragment extends Fragment {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
         });
+
+        // Set up the buttons
+        view.findViewById(R.id.indent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                e.append("    ");
+            }
+        });
+        view.findViewById(R.id.leftParen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                e.append("(");
+            }
+        });
+        view.findViewById(R.id.rightParen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                e.append(")");
+            }
+        });
+        view.findViewById(R.id.leftBrace).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                e.append("{");
+            }
+        });
+        view.findViewById(R.id.rightBrace).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                e.append("}");
+            }
+        });
+        view.findViewById(R.id.semicolon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                e.append(";");
+            }
+        });
+        view.findViewById(R.id.email).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent emailer = new Intent(Intent.ACTION_SENDTO);
+                        emailer.setType("text/html");
+                        emailer.putExtra(Intent.EXTRA_SUBJECT, "Solution");
+
+                        // Check whether we can send formatted HTML
+                        PackageManager manager = getContext().getPackageManager();
+                        List<ResolveInfo> infos = manager.queryIntentActivities(emailer, 0);
+                        if (infos.size() == 0) { // If we can't, default to plain text
+                            emailer.setData(Uri.parse("mailto:"));
+                            emailer.putExtra(Intent.EXTRA_TEXT, e.getText().toString());
+                            Toast.makeText(getContext().getApplicationContext(),
+                                    "HTML formatted email is unavailable",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            emailer.putExtra(Intent.EXTRA_TEXT, e.getText());
+                        }
+
+                        startActivity(Intent.createChooser(emailer, "Send email.."));
+                    }
+                });
 
         return view;
     }
